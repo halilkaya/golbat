@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Golbat by halilkaya</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Golbat</h1>
+      <h2 class="project-tagline"> Golbat is an Android library that helps you on working with camera, gallery and output and its encoded types. </h2>
+      <a href="https://github.com/halilkaya/golbat" class="btn">View on GitHub</a>
+      <a href="https://github.com/halilkaya/golbat/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/halilkaya/golbat/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <p><img src="https://camo.githubusercontent.com/51aef7a4f69aea7e09cf193e1ed52a58287b1e6c/687474703a2f2f692e696d6775722e636f6d2f4439326a4446662e706e67" alt="Golbat"></p>
+
+<h1>
+<a id="golbat" class="anchor" href="#golbat" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Golbat</h1>
+
+<p>Golbat is an Android library that helps you on working with camera, gallery and output and its encoded types.</p>
+
+<h1>
+<a id="quick-start" class="anchor" href="#quick-start" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Quick Start</h1>
+
+<p>Put it into your project! In your Gradle file:</p>
+
+<div class="highlight highlight-source-java"><pre>repositories {
+    <span class="pl-c1">...</span>
+    maven {
+        url <span class="pl-s"><span class="pl-pds">"</span>https://jitpack.io<span class="pl-pds">"</span></span>
+    }
+}
+
+dependencies {
+    <span class="pl-c1">...</span>
+    compile <span class="pl-s"><span class="pl-pds">'</span>com.github.halilkaya:golbat:0.0.1<span class="pl-pds">'</span></span>
+}</pre></div>
+
+<p>Golbat deals with storage. So, you need to take perrmissions below first:</p>
+
+<div class="highlight highlight-text-xml"><pre>&lt;<span class="pl-ent">uses-permission</span> <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>android.permission.WRITE_EXTERNAL_STORAGE<span class="pl-pds">"</span></span>/&gt;
+&lt;<span class="pl-ent">uses-permission</span> <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>android.permission.READ_EXTERNAL_STORAGE<span class="pl-pds">"</span></span>/&gt;</pre></div>
+
+<p>To begin to use Golbat, build it in your <code>Application</code> class:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">new</span> <span class="pl-smi">Golbat</span>.<span class="pl-smi">Builder</span>()
+        .setDirectoryName(<span class="pl-s"><span class="pl-pds">"</span>MyPhotos<span class="pl-pds">"</span></span>)
+        .setContentResolver(getContentResolver())
+        .setCameraRequestCode(<span class="pl-c1">200</span>)
+        .setImageQuality(<span class="pl-c1">100</span>)
+        .build();</pre></div>
+
+<p>Well, now let's make a simple app that opens camera app and shows the captured image in an ImageView via Golbat!</p>
+
+<p>Define 3 global variables:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">private</span> <span class="pl-smi">Button</span> openCameraApp;
+<span class="pl-k">private</span> <span class="pl-smi">ImageView</span> myImageView;
+<span class="pl-k">private</span> <span class="pl-smi">Uri</span> fileUri;</pre></div>
+
+<p>Let them know who them are in <code>onCreate</code> method:</p>
+
+<div class="highlight highlight-source-java"><pre>openCameraApp <span class="pl-k">=</span> (<span class="pl-smi">Button</span>) findViewById(<span class="pl-smi">R</span><span class="pl-k">.</span>id<span class="pl-k">.</span>open_camera_app);
+myImageView <span class="pl-k">=</span> (<span class="pl-smi">ImageView</span>) findViewById(<span class="pl-smi">R</span><span class="pl-k">.</span>id<span class="pl-k">.</span>my_image_view);</pre></div>
+
+<p>Open camera app when <code>openCameraApp</code> button is pressed in again <code>onCreate</code> method:</p>
+
+<div class="highlight highlight-source-java"><pre>openCameraApp<span class="pl-k">.</span>setOnClickListener(<span class="pl-k">new</span> <span class="pl-smi">View</span>.<span class="pl-smi">OnClickListener</span>() {
+    <span class="pl-k">@Override</span>
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onClick</span>(<span class="pl-smi">View</span> <span class="pl-v">v</span>) {
+        fileUri <span class="pl-k">=</span> <span class="pl-smi">Golbat</span><span class="pl-k">.</span>openCamera(<span class="pl-smi">MainActivity</span><span class="pl-k">.</span><span class="pl-v">this</span>);
+    }
+});</pre></div>
+
+<p>Yeah! Our button opens the camera app! Let's handle the captured image:</p>
+
+<div class="highlight highlight-source-java"><pre>@<span class="pl-smi">Override</span>
+<span class="pl-k">protected</span> <span class="pl-k">void</span> onActivityResult(<span class="pl-k">int</span> requestCode, <span class="pl-k">int</span> resultCode, <span class="pl-smi">Intent</span> data) {
+    <span class="pl-k">if</span> (resultCode <span class="pl-k">==</span> <span class="pl-smi">Activity</span><span class="pl-c1"><span class="pl-k">.</span>RESULT_OK</span> <span class="pl-k">&amp;&amp;</span> requestCode <span class="pl-k">==</span> <span class="pl-c1">200</span>) {
+        <span class="pl-smi">Golbat</span><span class="pl-k">.</span>showImage(
+                <span class="pl-smi">Golbat</span><span class="pl-k">.</span><span class="pl-smi">CaptureType</span><span class="pl-c1"><span class="pl-k">.</span>CAPTURED_FROM_CAMERA</span>,
+                myImageView,
+                fileUri
+        );
+    }
+}</pre></div>
+
+<p>How does it look? Oh, API wants base64 encoded version? Here you go:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-smi">String</span> base64forApi <span class="pl-k">=</span> <span class="pl-smi">Golbat</span><span class="pl-k">.</span>getBase64(
+        <span class="pl-smi">Golbat</span><span class="pl-k">.</span>getSelectedImageAsBitmap(fileUri),
+        <span class="pl-c1">false</span>
+);</pre></div>
+
+<p>Voila!</p>
+
+<p>Want more? Then, see the full <a href="https://github.com/halilkaya/golbat/wiki/Documentation">documentation</a>.</p>
+
+<h1>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h1>
+
+<pre><code>Golbat is an Android library that helps on working with camera,
+gallery and output and its encoded types.
+Copyright (C) 2016  Halil Kaya
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+</code></pre>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/halilkaya/golbat">Golbat</a> is maintained by <a href="https://github.com/halilkaya">halilkaya</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
