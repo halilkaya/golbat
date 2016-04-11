@@ -1,7 +1,8 @@
 ![Golbat](http://i.imgur.com/D92jDFf.png)
-# Golbat
 
 [![Join the chat at https://gitter.im/halilkaya/golbat](https://badges.gitter.im/halilkaya/golbat.svg)](https://gitter.im/halilkaya/golbat?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+# Golbat
 Golbat is an Android library that helps you on working with camera, gallery and output and its encoded types.
 
 # Quick Start
